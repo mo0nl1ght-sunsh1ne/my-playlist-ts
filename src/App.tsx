@@ -77,7 +77,7 @@ function App() {
                 onClick={() => window.open(`https://open.spotify.com/track/${song.id}`)} />
               </div>
             </div>
-            <div className="song-artist">{song.mainArtist}</div>
+            <div className="song-artist">{song.artists.join(', ')}</div>
           </div>
         </div>
         <div className="song-other-element">{song.album.name}</div>
@@ -92,8 +92,8 @@ function App() {
       <div className='playlist-filter'>
         <label htmlFor="artist-filter-prompt">Filter by Artists:</label>
         <select className="artist-filter" id="artist-filter" onChange={(e) => filterArtist(e)}>
-        <option value="all">All</option>
-        {uniqueArtists.map(e => (<option value={e}>{e}</option>))} 
+        <option key="all" value="all">All</option>
+        {uniqueArtists.map(e => (<option key={e} value={e}>{e}</option>))} 
         </select>
       </div>
       <div className="playlist-header">
