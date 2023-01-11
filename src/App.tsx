@@ -87,30 +87,12 @@ function App() {
     );
   }
 
-  let artistsArr: any[] = [];;
-  let i: any;
-  const allArtists = () => {
-    for (let x of playlist) {
-      for (i of x.artists) {
-        artistsArr.push(i)
-      }
-    }
-  }
-  allArtists();
-  const uniqueArtists = [...new Set(artistsArr)].sort();
-  let isFiltered = false;
-  let filteredPlaylist: any[] = [];
-  const filterArtist = (event: any) => {
-    filteredPlaylist = playlist.filter(e => e.artists.includes(event.target.value));
-    isFiltered = true;
-  }
-
-  console.log(isFiltered)
   return (
     <div className='playlist-container'>
       <div className='playlist-filter'>
         <label htmlFor="artist-filter-prompt">Filter by Artists:</label>
         <select className="artist-filter" id="artist-filter" onChange={(e) => filterArtist(e)}>
+        <option value="all">All</option>
         {uniqueArtists.map(e => (<option value={e}>{e}</option>))} 
         </select>
       </div>

@@ -1,7 +1,7 @@
 .playlist-container {
-    background-color: seagreen;
     .playlist-filter {
       margin-left: 10px;
+      margin-bottom: 10px;
     }
     .playlist-header {
       display: grid;
@@ -31,6 +31,7 @@
             text-decoration: double;
             .song-title-name {
               float: left;
+              width: 350px;
             }
             .music-link-container {
               float: right;
@@ -57,6 +58,4 @@
       }
     }
   }
-  
-  
   
