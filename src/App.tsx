@@ -1,10 +1,15 @@
 import './App.scss';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 function App() {
   const playlist: any[] = require('./playlist.json');
 
-  const comparePopularity = (a: any,b: any) => {
+  const [artistsArr, setArtistsArr] = useState<string[]>([]);
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
+  const [filteredPlaylist, setFilteredPlaylist] = useState<any[]>([]);
+  const [uniqueArtists, setUniqueArtists] = useState<string[]>([]);
+
+  const comparePopularity = (a:any, b:any) => {
     if (a.popularity > b.popularity)
        return -1;
     if (a.popularity < b.popularity)
@@ -12,7 +17,7 @@ function App() {
     return 0;
   }
 
-  const artistAtoZ = (a: any,b: any) => {
+  const artistAtoZ = (a: any, b: any) => {
     if (a.mainArtist.toLowerCase() < b.mainArtist.toLowerCase())
        return -1;
     if (a.mainArtist.toLowerCase() > b.mainArtist.toLowerCase())
@@ -20,14 +25,42 @@ function App() {
     return 0;
   }
 
-  const compareDate = (a: any,b: any) => {
+  const compareDate = (a:any, b:any) => {
     if (a.album.releaseDate < b.album.releaseDate)
        return -1;
     if (a.album.releaseDate > b.album.releaseDate)
       return 1;
     return 0;
   }
-  playlist.sort(artistAtoZ)
+
+  // playlist.sort(artistAtoZ)
+
+  const allArtists = useCallback(() => {
+    let arr: string[] = [];
+    for (let x of playlist) {
+      for (let i of x.artists) {
+        arr.push(i)
+      }
+    }
+    return arr;
+  }, [playlist]);
+  
+  useEffect(() => {
+    if (artistsArr.length === 0) {
+      setArtistsArr(allArtists());
+    }
+    setUniqueArtists(Array.from(new Set(artistsArr)).sort())
+  }, [allArtists, artistsArr]);
+
+  const filterArtist = (event: any) => {
+    if (event.target.value !== 'all') {
+      setFilteredPlaylist(playlist.filter(e => e.artists.includes(event.target.value)).sort(compareDate));
+      setIsFiltered(true);
+    } else {
+      setIsFiltered(false);
+    }
+  }
+
   const mapSongsToApp = (song: any) => {
     return (
       <div className="playlist-content">
